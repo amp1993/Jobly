@@ -40,7 +40,7 @@ class Company {
         ],
     );
     const company = result.rows[0];
-
+    
     return company;
   }
 
@@ -49,16 +49,33 @@ class Company {
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
-  static async findAll() {
-    const companiesRes = await db.query(
-          `SELECT handle,
-                  name,
-                  description,
-                  num_employees AS "numEmployees",
-                  logo_url AS "logoUrl"
-           FROM companies
-           ORDER BY name`);
-    return companiesRes.rows;
+  static async findAll(name, maxEmployees, minEmployees) {
+    
+    // if (maxEmployees === 0 && minEmployees === 0 ){
+      const companiesRes = await db.query(
+        `SELECT handle,
+        name,
+        description,
+        num_employees AS "numEmployees",
+        logo_url AS "logoUrl
+        FROM companies 
+        WHERE NAME ILIKE $1 || %"`, [name]
+      )
+      return companiesRes.rows;
+    
+
+
+    // const companiesRes = await db.query(
+    //       `SELECT handle,
+    //               name,
+    //               description,
+    //               num_employees AS "numEmployees",
+    //               logo_url AS "logoUrl"
+    //        FROM companies
+    //        ORDER BY name`);
+
+    // return companiesRes.rows;
+
   }
 
   /** Given a company handle, return data about company.
