@@ -85,8 +85,68 @@ describe("findAll", function () {
       },
     ]);
   });
-});
 
+
+  test("works: with filter name", async function () {
+    let name = "C";
+    let companies = await Company.findAll({ name });
+    expect(companies).toEqual([
+      {
+        handle: "c1",
+        name: "C1",
+        description: "Desc1",
+        numEmployees: 1,
+        logoUrl: "http://c1.img",
+      },
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img",
+      },
+      {
+        handle: "c3",
+        name: "C3",
+        description: "Desc3",
+        numEmployees: 3,
+        logoUrl: "http://c3.img",
+      },
+    ]);
+  });
+  
+  test("works: with name, maxEmployees and minEmployees filter", async function () {
+    let name = "C";
+    let minEmployees = 1;
+    let maxEmployees = 2;
+    let companies = await Company.findAll({ name, minEmployees, maxEmployees });
+    expect(companies).toEqual([
+      {
+        handle: "c1",
+        name: "C1",
+        description: "Desc1",
+        numEmployees: 1,
+        logoUrl: "http://c1.img",
+      },
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img",
+      },
+    ]);
+  });
+  
+  test("throws BadRequestError if minEmployees > MaxEmployees", async function () {
+    let name = "C";
+    let minEmployees = 3;
+    let maxEmployees = 2;
+    await expect(
+      Company.findAll({ name, minEmployees, maxEmployees })
+    ).rejects.toThrowError(BadRequestError);
+  });
+});
 /************************************** get */
 
 describe("get", function () {
@@ -111,7 +171,7 @@ describe("get", function () {
   });
 });
 
-/************************************** update */
+// /************************************** update */
 
 describe("update", function () {
   const updateData = {
@@ -187,7 +247,7 @@ describe("update", function () {
   });
 });
 
-/************************************** remove */
+// /************************************** remove */
 
 describe("remove", function () {
   test("works", async function () {
