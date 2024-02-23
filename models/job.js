@@ -71,8 +71,8 @@ class Jobs {
             }
 
             if (data.equity !== null && data.equity !== undefined) {
-                const roundedEquity = Math.round(data.equity)
-                if (roundedEquity === 0) {
+                // const roundedEquity = Math.round(data.equity)
+                if (data.equity === "0") {
                     if (params.length === 0) {
                         query += ` WHERE`;
                     } else {
